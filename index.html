@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle City Kayak Rentals</title>
+    <!-- Use Tailwind CSS for modern, responsive styling. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /*
+         * CSS CUSTOM PROPERTIES AND BASE STYLING
+         * ------------------------------------
+         * This section defines a custom color palette using CSS variables
+         * and applies a consistent font and basic styling to the body.
+         * Updated to match Google's Material Design aesthetic.
+         */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        
+        * {
+            font-family: 'Google Sans', 'Roboto', Arial, sans-serif !important;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background-color: var(--background); 
+            color: var(--foreground); 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :root {
+            --background: #ffffff;
+            --foreground: #202124; /* Google's standard dark gray for text */
+            --muted-foreground: #5f6368; /* Google's secondary text color */
+            --primary: #1a73e8; /* Classic Google Blue */
+            --primary-foreground: #ffffff;
+            --secondary: #f8f9fa; /* Google's standard light gray background */
+            --icon-bg: #e8f0fe; /* Google's light blue state/icon background */
+        }
+
+        /* Utility classes for consistency and readability */
+        .bg-background { background-color: var(--background); }
+        .text-foreground { color: var(--foreground); }
+        .text-muted-foreground { color: var(--muted-foreground); }
+        .bg-primary { background-color: var(--primary); }
+        .text-primary { color: var(--primary); }
+        .text-primary-foreground { color: var(--primary-foreground); }
+        .bg-secondary { background-color: var(--secondary); }
+        .bg-icon-bg { background-color: var(--icon-bg); }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /*
+         * ACCORDION STYLING
+         * -----------------
+         * These classes manage the visual state and transitions for the
+         * FAQ accordion section, ensuring a smooth open/close effect.
+         */
+        .accordion-item {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .accordion-button {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .accordion-icon {
+            transform: rotate(0deg);
+            transition: transform 0.2s ease-in-out;
+        }
+        .accordion-item[data-open="true"] .accordion-icon {
+            transform: rotate(180deg);
+        }
+        .accordion-content {
+            overflow: hidden;
+            max-height: 0;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        .accordion-item[data-open="true"] .accordion-content {
+            max-height: 200px; /* Adjust this value if content grows */
+            padding-top: 1rem !important;
+            padding-bottom: 1rem !important;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased font-sans bg-background text-foreground">
+
+    <!--
+     * HEADER SECTION
+     * --------------
+     * A sticky header with the site logo and navigation links.
+     * It's designed to be responsive, with a hidden menu for mobile.
+     -->
+    <header class="sticky top-0 z-50 w-full border-b bg-background shadow-sm">
+        <div class="container mx-auto px-4 flex h-16 items-center justify-between md:h-20">
+            <!-- Logo -->
+            <a class="flex items-center space-x-2" href="#">
+                <div class="p-1 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="h-8 w-8 md:h-10 md:w-10 object-contain">
+                      <path d="M 250,20 C 265,60 325,140 325,250 C 325,360 265,440 250,480 C 235,440 175,360 175,250 C 175,140 235,60 250,20 Z" fill="#003359" />
+
+                      <ellipse cx="250" cy="250" rx="36" ry="85" fill="none" stroke="#ffffff" stroke-width="14" />
+
+                      <path d="M -120,-6
+                               L 120,-6
+                               C 140,-6 160,-24 205,-24
+                               C 230,-24 245,-12 245,0
+                               C 245,12 230,24 205,24
+                               C 160,24 140,6 120,6
+                               L -120,6
+                               C -140,6 -160,24 -205,24
+                               C -230,24 -245,12 -245,0
+                               C -245,-12 -230,-24 -205,-24
+                               C -160,-24 -140,-6 -120,-6 Z"
+                            transform="translate(250,250) rotate(48)"
+                            fill="#ffffff" stroke="#ffffff" stroke-width="16" stroke-linejoin="round" />
+
+                      <path d="M -120,-6
+                               L 120,-6
+                               C 140,-6 160,-24 205,-24
+                               C 230,-24 245,-12 245,0
+                               C 245,12 230,24 205,24
+                               C 160,24 140,6 120,6
+                               L -120,6
+                               C -140,6 -160,24 -205,24
+                               C -230,24 -245,12 -245,0
+                               C -245,-12 -230,-24 -205,-24
+                               C -160,-24 -140,-6 -120,-6 Z"
+                            transform="translate(250,250) rotate(48)"
+                            fill="#c82e27" />
+                    </svg>
+                </div>
+                <span class="font-bold text-lg md:text-xl text-foreground whitespace-nowrap">Vehicle City Kayak</span>
+            </a>
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-6">
+                <a class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary" href="#how-it-works">How It Works</a>
+                <a class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary" href="#location">Location</a>
+                <a class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary" href="#faqs">FAQs</a>
+                <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3" href="#cta-booking">Book Now</a>
+            </nav>
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10" type="button" aria-label="Toggle Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                        <line x1="4" x2="20" y1="12" y2="12"></line>
+                        <line x1="4" x2="20" y1="6" y2="6"></line>
+                        <line x1="4" x2="20" y1="18" y2="18"></line>
+                    </svg>
+                    <span class="sr-only">Toggle Menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-background border-b px-4 py-4 space-y-4 shadow-sm">
+            <a class="block text-sm font-medium text-muted-foreground transition-colors hover:text-primary" href="#how-it-works">How It Works</a>
+            <a class="block text-sm font-medium text-muted-foreground transition-colors hover:text-primary" href="#location">Location</a>
+            <a class="block text-sm font-medium text-muted-foreground transition-colors hover:text-primary" href="#faqs">FAQs</a>
+            <a class="inline-flex w-full items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3" href="#cta-booking">Book Now</a>
+        </div>
+    </header>
+
+    <!--
+     * MAIN CONTENT
+     * ------------
+     * Contains all the primary sections of the website.
+     -->
+    <main class="flex-grow">
+        <!-- HOME VIEW (Default) -->
+        <div id="home-view" class="flex flex-col transition-opacity duration-300">
+            <!-- Hero Section with a full-width background image and text overlay -->
+            <section class="relative h-[60vh] md:h-[70vh] w-full">
+                <img alt="People kayaking on a lake at sunset" class="brightness-75 absolute inset-0 object-cover w-full h-full" src="https://i.imgur.com/cbsJGjh.png">
+                <div class="absolute inset-0 flex flex-col items-start justify-center container mx-auto px-4 text-white p-8 md:p-16 space-y-4 md:space-y-6 bg-gradient-to-r from-black/30 to-transparent">
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg text-white">Explore the <br> Lake by Kayak!</h1>
+                    <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 bg-white text-primary hover:bg-gray-100 shadow-md px-8 py-3 text-lg rounded-full" href="#cta-booking">Rentals & Booking</a>
+                </div>
+            </section>
+
+            <!-- How It Works Section: 3-step process illustrated with icons -->
+            <section id="how-it-works" class="py-16 md:py-24 bg-background">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-12 text-foreground">How It Works</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                        <!-- Step 1 -->
+                        <div class="flex flex-col items-center space-y-4">
+                            <div class="bg-icon-bg p-5 rounded-full mb-4 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-primary">
+                                    <rect width="14" height="8" x="5" y="2" rx="2"></rect>
+                                    <rect width="20" height="8" x="2" y="14" rx="2"></rect>
+                                    <path d="M6 18h2"></path>
+                                    <path d="M12 18h6"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-foreground">1 Book Online</h3>
+                            <p class="text-muted-foreground max-w-xs">Choose your kayak and complete the rental form</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="flex flex-col items-center space-y-4">
+                            <div class="bg-icon-bg p-5 rounded-full mb-4 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-primary">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <polyline points="16 11 18 13 22 9"></polyline>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-foreground">2 Provide ID</h3>
+                            <p class="text-muted-foreground max-w-xs">Upload your identification for verification</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="flex flex-col items-center space-y-4">
+                            <div class="bg-icon-bg p-5 rounded-full mb-4 shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-10 w-10 text-primary">
+                                    <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path>
+                                    <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path>
+                                    <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-foreground">3 Enjoy the Water</h3>
+                            <p class="text-muted-foreground max-w-xs">Pick up your kayak and paddle all day until</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- A second image section to break up the content -->
+            <section class="relative h-[50vh] md:h-[60vh] w-full">
+                <img alt="Kayaks ready on a shore" class="absolute inset-0 object-cover w-full h-full" src="https://i.imgur.com/cbsJGjh.png">
+            </section>
+
+            <!-- Location Section with an embedded Google Maps iframe -->
+            <section id="location" class="py-16 md:py-24 bg-background">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8 text-foreground">Location</h2>
+                    <div class="bg-muted rounded-lg shadow-md overflow-hidden h-64 md:h-96">
+                        <iframe title="Location of Vehicle City Kayak Rentals in Flint, MI" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11690.354024823868!2d-83.6749712!3d43.010839699999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88237554d6f8f533%3A0xc39116c4f74d0a7a!2sThread%20Lake%20Park!5e0!3m2!1sen!2sus!4v1724808307398!5m2!1sen!2sus" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQs Section with a functional accordion component -->
+            <section id="faqs" class="py-16 md:py-24 bg-secondary">
+                <div class="container mx-auto px-4 max-w-3xl">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8 text-foreground text-center">Frequently Asked Questions</h2>
+                    <div class="w-full">
+                        <!-- Accordion Items -->
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    How can I contact you?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>You can contact us via email at vehiclecitykayaks@gmail.com for a quick response, or you can use the live chat button on our website. We are also available to answer questions via our social media pages.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    Where are you located?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>We are located at Thread Lake, just a few miles from downtown Flint. Our launch site is behind the Community Building at McKinley Park. Look for our signs!</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    What are your hours of operation?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>Our hours vary by season and weather. Please check our online booking system for the most up-to-date availability and operating hours.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    What types of watercraft do you offer?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>We offer single kayaks and tandem kayaks (for two people). All rentals are perfect for exploring Thread Lake.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    What are your rental durations and prices?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>We offer 2-hour rentals. A single kayak is $25, and a tandem kayak is $40.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    Is safety equipment provided?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>Yes, all kayak rentals include paddles and life jackets. Pedal boat rentals include life jackets. We will also provide basic instructions for your safety and enjoyment.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    What should I bring?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>We recommend bringing water, sunscreen, a hat, and a pair of sunglasses. We also suggest wearing comfortable clothing that you don't mind getting wet.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    Do I need to make an appointment?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>While we do accept walk-ins, we highly recommend booking online in advance, especially on weekends, to ensure a watercraft is available for you.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    What is your cancellation policy?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>We offer a full refund for cancellations made at least 24 hours in advance. For cancellations within 24 hours, we can provide a credit for a future rental.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    What if there is bad weather?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>For weather-related cancellations (e.g., thunderstorms or high winds), we will contact you to reschedule your rental or issue a full refund. Your safety is our top priority.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    Do you have an expiration date for rental purchases?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>Yes, all rentals must be used within the current season. Our season typically runs from late spring to early fall. You can find exact dates on our website.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-open="false">
+                            <h3 class="flex">
+                                <button type="button" class="accordion-button">
+                                    Is there a limit on how many rentals I can purchase?
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="accordion-icon h-4 w-4 shrink-0 transition-transform duration-200">
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                            </h3>
+                            <div class="accordion-content p-4 text-muted-foreground">
+                                <p>There is no limit! Feel free to purchase as many rentals as you and your friends or family need for a great day on the water.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Booking Section: Call to action with buttons -->
+            <section id="cta-booking" class="py-16 md:py-24 bg-primary text-primary-foreground">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Paddle?</h2>
+                    <p class="text-lg mb-8 max-w-xl mx-auto text-primary-foreground/90">Choose your adventure. We offer single and tandem kayaks for 2-hour rentals on the lake.</p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <button data-service="Single Kayak ($25)" class="book-service-btn inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 bg-white text-primary hover:bg-gray-100 shadow-md px-8 py-3 text-lg rounded-full w-full sm:w-auto">Single Kayak ($25)</button>
+                        <button data-service="Tandem Kayak ($40)" class="book-service-btn inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 bg-white text-primary hover:bg-gray-100 shadow-md px-8 py-3 text-lg rounded-full w-full sm:w-auto">Tandem Kayak ($40)</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- BOOKING / CONTACT VIEW (Hidden by default) -->
+        <div id="booking-view" class="hidden flex-col items-center justify-center py-16 px-4 md:py-24 container mx-auto max-w-3xl min-h-[60vh] transition-opacity duration-300">
+            <button id="back-to-home" class="mb-8 self-start text-primary font-medium flex items-center gap-2 hover:underline focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                Back to Home
+            </button>
+            
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">Complete Your Booking</h2>
+                <p class="text-lg text-muted-foreground">You selected: <span id="selected-service" class="font-bold text-primary"></span></p>
+                <p class="text-muted-foreground mt-2">Reach out to us directly or use the form below to request your rental.</p>
+            </div>
+            
+            <div class="bg-white border p-8 rounded-2xl w-full shadow-lg">
+                <!-- Contact Info Row -->
+                <div class="flex flex-col md:flex-row gap-6 justify-around mb-8 border-b pb-8">
+                    <div class="flex flex-col items-center gap-3 text-center">
+                        <div class="bg-icon-bg p-4 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary h-6 w-6"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-muted-foreground font-medium">Email Us</p>
+                            <a href="mailto:vehiclecitykayaks@gmail.com" class="font-semibold text-foreground hover:text-primary transition-colors">vehiclecitykayaks@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center gap-3 text-center">
+                        <div class="bg-icon-bg p-4 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary h-6 w-6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-muted-foreground font-medium">Call Us</p>
+                            <a href="tel:+18105550199" class="font-semibold text-foreground hover:text-primary transition-colors">(810) 555-0199</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mailto Form -->
+                <form id="booking-form" class="space-y-5">
+                    <div>
+                        <label for="book-name" class="block text-sm font-medium text-foreground mb-1">Your Name</label>
+                        <input type="text" id="book-name" required class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="John Doe">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label for="book-date" class="block text-sm font-medium text-foreground mb-1">Preferred Date</label>
+                            <input type="date" id="book-date" required class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        </div>
+                        <div>
+                            <label for="book-time" class="block text-sm font-medium text-foreground mb-1">Preferred Time</label>
+                            <select id="book-time" required class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white">
+                                <option value="" disabled selected>Select a time</option>
+                                <option value="Morning (9AM - 12PM)">Morning (9AM - 12PM)</option>
+                                <option value="Afternoon (12PM - 4PM)">Afternoon (12PM - 4PM)</option>
+                                <option value="Evening (4PM - 7PM)">Evening (4PM - 7PM)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 bg-primary text-primary-foreground hover:bg-primary/90 shadow-md px-8 py-3 text-lg rounded-md mt-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            Send Booking Request Email
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!--
+     * FOOTER SECTION
+     * --------------
+     * A simple footer with a copyright notice.
+     -->
+    <footer class="py-6 md:px-8 md:py-8 border-t bg-secondary">
+        <div class="container mx-auto px-4 flex flex-col items-center justify-center">
+            <p class="text-center text-sm text-muted-foreground">&copy; 2025 Vehicle City Kayak Rentals. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!--
+     * FLOATING CHAT BUTTON & WINDOW
+     * --------------------
+     * A fixed position button for a potential chat feature and the interactive FAQ flow.
+     -->
+    <button id="chat-toggle-btn" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-xl z-50 hover:bg-primary/90 transition-transform hover:scale-105 active:scale-95" aria-label="Open chat" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+
+    <!-- Chatbot Window -->
+    <div id="chat-window" class="fixed bottom-24 right-6 w-[90vw] max-w-[350px] bg-background border rounded-2xl shadow-2xl z-50 flex flex-col hidden overflow-hidden transition-all duration-300 opacity-0 translate-y-4">
+        <div class="bg-primary text-primary-foreground p-4 flex justify-between items-center rounded-t-2xl">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                <h3 class="font-bold">Kayak Assistant</h3>
+            </div>
+            <button id="close-chat" class="text-primary-foreground/80 hover:text-white transition-colors focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+        <div id="chat-messages" class="p-4 h-80 overflow-y-auto flex flex-col gap-3 bg-secondary/30 text-sm"></div>
+        <form id="chat-input-form" class="p-3 border-t bg-background flex items-center gap-2">
+            <input type="text" id="chat-text-input" class="flex-1 px-3 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Type a message..." autocomplete="off">
+            <button type="submit" class="bg-primary text-primary-foreground p-2 rounded-full hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript for the mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // JavaScript for the accordion functionality
+        document.querySelectorAll('.accordion-item').forEach(item => {
+            const button = item.querySelector('.accordion-button');
+            const content = item.querySelector('.accordion-content');
+
+            button.addEventListener('click', () => {
+                const isOpen = item.getAttribute('data-open') === 'true';
+                item.setAttribute('data-open', !isOpen);
+                content.style.maxHeight = !isOpen ? `${content.scrollHeight}px` : '0';
+            });
+        });
+
+        // --- Interactive FAQ Chatbot Logic ---
+        const chatToggleBtn = document.getElementById('chat-toggle-btn');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChatBtn = document.getElementById('close-chat');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInputForm = document.getElementById('chat-input-form');
+        const chatTextInput = document.getElementById('chat-text-input');
+
+        let chatOpen = false;
+        let isFirstOpen = true;
+
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            if (chatOpen) {
+                chatWindow.classList.remove('hidden');
+                // Force a browser reflow so the transition animation actually plays
+                void chatWindow.offsetWidth; 
+                chatWindow.classList.remove('opacity-0', 'translate-y-4');
+                chatWindow.classList.add('opacity-100', 'translate-y-0');
+                
+                // Initialize chat if empty
+                if (isFirstOpen) {
+                    isFirstOpen = false;
+                    setTimeout(() => {
+                        addMessage("Hi there! 👋 I'm the Vehicle City Kayak Assistant. Feel free to ask me anything about our rentals, location, or what to bring!", true);
+                    }, 400);
+                }
+                setTimeout(() => chatTextInput.focus(), 300);
+            } else {
+                chatWindow.classList.remove('opacity-100', 'translate-y-0');
+                chatWindow.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => {
+                    chatWindow.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        chatToggleBtn.addEventListener('click', toggleChat);
+        closeChatBtn.addEventListener('click', toggleChat);
+
+        function addMessage(text, isBot = true) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `max-w-[85%] p-3 rounded-2xl ${isBot ? 'bg-white text-foreground rounded-tl-none shadow-sm border border-gray-100' : 'bg-primary text-primary-foreground rounded-tr-none self-end shadow-sm'}`;
+            msgDiv.innerHTML = text;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getBotResponse(input) {
+            const text = input.toLowerCase();
+            
+            if (text.includes("price") || text.includes("cost") || text.includes("much") || text.includes("rate") || text.includes("money")) {
+                return "We offer 2-hour rentals! A single kayak is $25, and a tandem kayak is $40.";
+            } else if (text.includes("book") || text.includes("rent") || text.includes("reserve")) {
+                return "You can book your adventure right here on our site! Just click 'Book Now' at the top, or select one of the kayak options below the FAQ section.";
+            } else if (text.includes("location") || text.includes("where") || text.includes("address") || text.includes("find")) {
+                return "We launch right behind the Community Building at McKinley Park on Thread Lake in Flint. Check out the map section for exactly where we are!";
+            } else if (text.includes("bring") || text.includes("what") || text.includes("wear")) {
+                return "We provide the kayak, paddles, and life jackets! You should bring water, sunscreen, a hat, and wear clothes you don't mind getting a little wet.";
+            } else if (text.includes("contact") || text.includes("email") || text.includes("phone") || text.includes("call")) {
+                return "You can email us directly at vehiclecitykayaks@gmail.com or give us a call at (810) 555-0199.";
+            } else if (text.includes("hi") || text.includes("hello") || text.includes("hey")) {
+                return "Hello! How can I help you get out on the water today?";
+            } else if (text.includes("thank")) {
+                return "You're very welcome! Let me know if you need anything else.";
+            } else {
+                return "I'm a simple kayak bot! 🛶 I can help answer questions about our pricing, location, what to bring, or how to contact us. What would you like to know?";
+            }
+        }
+
+        chatInputForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userText = chatTextInput.value.trim();
+            if (!userText) return;
+
+            // Add user message
+            addMessage(userText, false);
+            chatTextInput.value = '';
+
+            // Simulate typing delay
+            setTimeout(() => {
+                const response = getBotResponse(userText);
+                addMessage(response, true);
+            }, 600 + Math.random() * 400); // 600-1000ms delay
+        });
+
+        // --- View Switching & Booking Logic ---
+        const homeView = document.getElementById('home-view');
+        const bookingView = document.getElementById('booking-view');
+        const backToHomeBtn = document.getElementById('back-to-home');
+        const selectedServiceSpan = document.getElementById('selected-service');
+        const bookingForm = document.getElementById('booking-form');
+
+        function switchToBookingView(serviceName) {
+            selectedServiceSpan.textContent = serviceName;
+            
+            // Fade out home, fade in booking
+            homeView.classList.add('hidden');
+            bookingView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchToHomeView() {
+            bookingView.classList.add('hidden');
+            homeView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Attach event listeners to all book buttons
+        document.querySelectorAll('.book-service-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const service = this.getAttribute('data-service');
+                switchToBookingView(service);
+            });
+        });
+
+        backToHomeBtn.addEventListener('click', switchToHomeView);
+
+        // Handle Mailto Form Submission
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('book-name').value;
+            const date = document.getElementById('book-date').value;
+            const time = document.getElementById('book-time').value;
+            const service = selectedServiceSpan.textContent;
+
+            const subject = encodeURIComponent(`Booking Request: ${service} - ${name}`);
+            const body = encodeURIComponent(
+                `Hi Vehicle City Kayaks,\n\nI would like to request a booking.\n\n` +
+                `Name: ${name}\n` +
+                `Service: ${service}\n` +
+                `Preferred Date: ${date}\n` +
+                `Preferred Time: ${time}\n\n` +
+                `Please let me know if this is available!\n\n` +
+                `Thanks,\n${name}`
+            );
+
+            window.location.href = `mailto:vehiclecitykayaks@gmail.com?subject=${subject}&body=${body}`;
+        });
+    </script>
+</body>
+</html>
