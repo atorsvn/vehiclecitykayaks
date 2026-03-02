@@ -81,15 +81,10 @@
         .accordion-content {
             overflow: hidden;
             max-height: 0;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
             opacity: 0;
-            transition: all 0.3s ease-in-out;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
         }
         .accordion-item[data-open="true"] .accordion-content {
-            max-height: 1000px; /* Increased to ensure all text is fully revealed */
-            padding-top: 1rem !important;
-            padding-bottom: 1rem !important;
             opacity: 1;
         }
     </style>
@@ -265,8 +260,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>You can contact us via email at vehiclecitykayaks@gmail.com for a quick response, or you can call us at (810) 513-2439 We are also available to answer questions via our social media pages.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>You can contact us via email at vehiclecitykayaks@gmail.com for a quick response, or you can call us at (810) 513-2439 We are also available to answer questions via our social media pages.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -278,8 +275,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>We are located at Thread Lake, just a few miles from downtown Flint. Our launch site is behind the Community Building at McKinley Park. Look for our signs!</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>We are located at Thread Lake, just a few miles from downtown Flint. Our launch site is behind the Community Building at McKinley Park. Look for our signs!</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -291,8 +290,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>Our hours vary by season and weather. Please check our online booking system for the most up-to-date availability and operating hours.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>Our hours vary by season and weather. Please check our online booking system for the most up-to-date availability and operating hours.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -304,8 +305,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>We offer single kayaks and tandem kayaks (for two people). All rentals are perfect for exploring Thread Lake.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>We offer single kayaks and tandem kayaks (for two people). All rentals are perfect for exploring Thread Lake.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -317,8 +320,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>We offer 2-hour rentals. A single kayak is $25, and a tandem kayak is $40.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>We offer 2-hour rentals. A single kayak is $25, and a tandem kayak is $40.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -330,8 +335,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>Yes, all kayak rentals include paddles and life jackets. Pedal boat rentals include life jackets. We will also provide basic instructions for your safety and enjoyment.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>Yes, all kayak rentals include paddles and life jackets. Pedal boat rentals include life jackets. We will also provide basic instructions for your safety and enjoyment.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -343,8 +350,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>We recommend bringing water, sunscreen, a hat, and a pair of sunglasses. We also suggest wearing comfortable clothing that you don't mind getting wet.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>We recommend bringing water, sunscreen, a hat, and a pair of sunglasses. We also suggest wearing comfortable clothing that you don't mind getting wet.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -356,8 +365,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>While we do accept walk-ins, we highly recommend booking online in advance, especially on weekends, to ensure a watercraft is available for you.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>While we do accept walk-ins, we highly recommend booking online in advance, especially on weekends, to ensure a watercraft is available for you.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -369,8 +380,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>We offer a full refund for cancellations made at least 24 hours in advance. For cancellations within 24 hours, we can provide a credit for a future rental.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>We offer a full refund for cancellations made at least 24 hours in advance. For cancellations within 24 hours, we can provide a credit for a future rental.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -382,8 +395,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>For weather-related cancellations (e.g., thunderstorms or high winds), we will contact you to reschedule your rental or issue a full refund. Your safety is our top priority.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>For weather-related cancellations (e.g., thunderstorms or high winds), we will contact you to reschedule your rental or issue a full refund. Your safety is our top priority.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -395,8 +410,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>Yes, all rentals must be used within the current season. Our season typically runs from late spring to early fall. You can find exact dates on our website.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>Yes, all rentals must be used within the current season. Our season typically runs from late spring to early fall. You can find exact dates on our website.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item" data-open="false">
@@ -408,8 +425,10 @@
                                     </svg>
                                 </button>
                             </h3>
-                            <div class="accordion-content p-4 text-muted-foreground">
-                                <p>There is no limit! Feel free to purchase as many rentals as you and your friends or family need for a great day on the water.</p>
+                            <div class="accordion-content text-muted-foreground">
+                                <div class="p-4">
+                                    <p>There is no limit! Feel free to purchase as many rentals as you and your friends or family need for a great day on the water.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -558,12 +577,26 @@
         // JavaScript for the accordion functionality
         document.querySelectorAll('.accordion-item').forEach(item => {
             const button = item.querySelector('.accordion-button');
+            const content = item.querySelector('.accordion-content');
             
-            // Replaced JS inline height injection with pure CSS class toggling
-            // to allow CSS to manage the expanding area properly and prevent text clipping
             button.addEventListener('click', () => {
                 const isOpen = item.getAttribute('data-open') === 'true';
                 item.setAttribute('data-open', !isOpen);
+                
+                if (!isOpen) {
+                    // Set to precise content height to prevent clipping
+                    content.style.maxHeight = content.scrollHeight + "px";
+                } else {
+                    content.style.maxHeight = "0px";
+                }
+            });
+
+            // Recalculate height on window resize in case text wraps differently
+            window.addEventListener('resize', () => {
+                if (item.getAttribute('data-open') === 'true') {
+                    content.style.maxHeight = "none";
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
             });
         });
 
