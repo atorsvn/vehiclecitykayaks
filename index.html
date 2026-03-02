@@ -87,7 +87,7 @@
             transition: all 0.3s ease-in-out;
         }
         .accordion-item[data-open="true"] .accordion-content {
-            max-height: 200px; /* Adjust this value if content grows */
+            max-height: 1000px; /* Increased to ensure all text is fully revealed */
             padding-top: 1rem !important;
             padding-bottom: 1rem !important;
             opacity: 1;
@@ -558,12 +558,12 @@
         // JavaScript for the accordion functionality
         document.querySelectorAll('.accordion-item').forEach(item => {
             const button = item.querySelector('.accordion-button');
-            const content = item.querySelector('.accordion-content');
-
+            
+            // Replaced JS inline height injection with pure CSS class toggling
+            // to allow CSS to manage the expanding area properly and prevent text clipping
             button.addEventListener('click', () => {
                 const isOpen = item.getAttribute('data-open') === 'true';
                 item.setAttribute('data-open', !isOpen);
-                content.style.maxHeight = !isOpen ? `${content.scrollHeight}px` : '0';
             });
         });
 
