@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Construction - Vehicle City Kayak Rentals</title>
+    <!-- Use Tailwind CSS for modern, responsive styling. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /*
+         * CSS CUSTOM PROPERTIES AND BASE STYLING
+         * ------------------------------------
+         * This section defines a custom color palette using CSS variables
+         * and applies a consistent font and basic styling to the body.
+         * Updated to match Google's Material Design aesthetic.
+         */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        
+        * {
+            font-family: 'Google Sans', 'Roboto', Arial, sans-serif !important;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background-color: var(--background); 
+            color: var(--foreground); 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :root {
+            --background: #ffffff;
+            --foreground: #202124; /* Google's standard dark gray for text */
+            --muted-foreground: #5f6368; /* Google's secondary text color */
+            --primary: #1a73e8; /* Classic Google Blue */
+            --primary-foreground: #ffffff;
+            --secondary: #f8f9fa; /* Google's standard light gray background */
+            --icon-bg: #e8f0fe; /* Google's light blue state/icon background */
+        }
+
+        /* Utility classes for consistency and readability */
+        .bg-background { background-color: var(--background); }
+        .text-foreground { color: var(--foreground); }
+        .text-muted-foreground { color: var(--muted-foreground); }
+        .bg-primary { background-color: var(--primary); }
+        .text-primary { color: var(--primary); }
+        .text-primary-foreground { color: var(--primary-foreground); }
+        .bg-secondary { background-color: var(--secondary); }
+        .bg-icon-bg { background-color: var(--icon-bg); }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased font-sans bg-background text-foreground">
+
+    <!--
+     * HEADER SECTION
+     * --------------
+     * A simplified header focusing purely on the brand identity.
+     -->
+    <header class="w-full border-b bg-background shadow-sm py-4 md:py-6">
+        <div class="container mx-auto px-4 flex items-center justify-center">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="p-1 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" class="h-10 w-10 md:h-12 md:w-12 object-contain">
+                        <path d="M 250,20 C 265,60 325,140 325,250 C 325,360 265,440 250,480 C 235,440 175,360 175,250 C 175,140 235,60 250,20 Z" fill="#003359" />
+                        <ellipse cx="250" cy="250" rx="36" ry="85" fill="none" stroke="#ffffff" stroke-width="14" />
+                        <path d="M -120,-6
+                                 L 120,-6
+                                 C 140,-6 160,-24 205,-24
+                                 C 230,-24 245,-12 245,0
+                                 C 245,12 230,24 205,24
+                                 C 160,24 140,6 120,6
+                                 L -120,6
+                                 C -140,6 -160,24 -205,24
+                                 C -230,24 -245,12 -245,0
+                                 C -245,-12 -230,-24 -205,-24
+                                 C -160,-24 -140,-6 -120,-6 Z"
+                              transform="translate(250,250) rotate(48)"
+                              fill="#ffffff" stroke="#ffffff" stroke-width="16" stroke-linejoin="round" />
+                        <path d="M -120,-6
+                                 L 120,-6
+                                 C 140,-6 160,-24 205,-24
+                                 C 230,-24 245,-12 245,0
+                                 C 245,12 230,24 205,24
+                                 C 160,24 140,6 120,6
+                                 L -120,6
+                                 C -140,6 -160,24 -205,24
+                                 C -230,24 -245,12 -245,0
+                                 C -245,-12 -230,-24 -205,-24
+                                 C -160,-24 -140,-6 -120,-6 Z"
+                              transform="translate(250,250) rotate(48)"
+                              fill="#c82e27" />
+                    </svg>
+                </div>
+                <span class="font-bold text-2xl md:text-3xl text-foreground whitespace-nowrap">Vehicle City Kayak</span>
+            </div>
+        </div>
+    </header>
+
+    <!--
+     * MAIN CONTENT
+     * ------------
+     * Centered construction/maintenance message with contact fallback.
+     -->
+    <main class="flex-grow flex flex-col items-center justify-center p-6 text-center">
+        <div class="max-w-2xl mx-auto space-y-8">
+            
+            <!-- Construction Icon -->
+            <div class="bg-icon-bg p-6 rounded-full inline-flex items-center justify-center mx-
